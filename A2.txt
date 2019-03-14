@@ -1,0 +1,106 @@
+Part 1
+Question 1
+The source and mount hold the same content, with all the same attributes. This is because the  we mounted /mount on /source, and creat a mirror of all files under /source.
+
+Question 2
+cat oneten
+=====================================================================================================
+DEBUG:fuse.log-mixin:-> getattr / (None,)
+DEBUG:fuse.log-mixin:<- getattr {'st_ctime': 1506921926.0, 'st_mtime': 1506921926.0, 'st_nlink': 2, 'st_mode': 16877, 'st_size': 2048, 'st_gid': 62215, 'st_uid': 2493042, 'st_atime': 1506921926.0}
+DEBUG:fuse.log-mixin:-> getattr /oneten (None,)
+DEBUG:fuse.log-mixin:<- getattr {'st_ctime': 1506868724.0, 'st_mtime': 1506868724.0, 'st_nlink': 1, 'st_mode': 33188, 'st_size': 31, 'st_gid': 62215, 'st_uid': 2493042, 'st_atime': 1506868724.0}
+DEBUG:fuse.log-mixin:-> open /oneten (32768,)
+DEBUG:fuse.log-mixin:<- open 4
+DEBUG:fuse.log-mixin:-> read /oneten (4096L, 0, 4L)
+DEBUG:fuse.log-mixin:<- read 'oneoneoneoneoneoneoneoneoneone\n'
+DEBUG:fuse.log-mixin:-> getattr /oneten (None,)
+DEBUG:fuse.log-mixin:<- getattr {'st_ctime': 1506868724.0, 'st_mtime': 1506868724.0, 'st_nlink': 1, 'st_mode': 33188, 'st_size': 31, 'st_gid': 62215, 'st_uid': 2493042, 'st_atime': 1506868724.0}
+DEBUG:fuse.log-mixin:-> flush /oneten (4L,)
+DEBUG:fuse.log-mixin:<- flush None
+DEBUG:fuse.log-mixin:-> release /oneten (4L,)
+DEBUG:fuse.log-mixin:<- release None
+=====================================================================================================
+getattr / (None,) - gets the file attributes associated with /oneten. The output is a dictionary. st_ctime is the creation time, st_mtime is the modified time,st_nlink is the number of hard links, st_mode is the file access mode, st_size is the size in bytes, st_gid is the group id, st_uid is the user id, st_atime is the last accessed time.
+
+open /oneten (32768,) - open the file with the pathname associated with /oneten. It returns a file descriptor.
+
+read /oneten (4096L, 0, 4L) - read attempts to read up to 4096 bytes from file descriptor fd into the buffer starting at buf. The number of bytes read is returned.
+
+flush /oneten (4L,) - flush the internel buffer associated with /oneten, and there is no value returned.
+
+realease /oneten() - realease
+
+cat > newfile
+=====================================================================================================
+DEBUG:fuse.log-mixin:-> getattr /newfile (None,)
+DEBUG:fuse.log-mixin:<- getattr {'st_ctime': 1506921988.0, 'st_mtime': 1506921988.0, 'st_nlink': 1, 'st_mode': 33188, 'st_size': 11, 'st_gid': 62215, 'st_uid': 2493042, 'st_atime': 1506921988.0}
+DEBUG:fuse.log-mixin:-> open /newfile (32769,)
+DEBUG:fuse.log-mixin:<- open 4
+DEBUG:fuse.log-mixin:-> getxattr /newfile (u'security.capability',)
+DEBUG:fuse.log-mixin:<- getxattr '[Errno 95] Operation not supported'
+DEBUG:fuse.log-mixin:-> truncate /newfile (0,)
+DEBUG:fuse.log-mixin:<- truncate None
+DEBUG:fuse.log-mixin:-> getattr /newfile (None,)
+DEBUG:fuse.log-mixin:<- getattr {'st_ctime': 1506996242.0, 'st_mtime': 1506996242.0, 'st_nlink': 1, 'st_mode': 33188, 'st_size': 0, 'st_gid': 62215, 'st_uid': 2493042, 'st_atime': 1506996242.0}
+DEBUG:fuse.log-mixin:-> flush /newfile (4L,)
+DEBUG:fuse.log-mixin:<- flush None
+=====================================================================================================
+
+hello world
+=====================================================================================================
+DEBUG:fuse.log-mixin:-> getxattr /newfile (u'security.capability',)
+DEBUG:fuse.log-mixin:<- getxattr '[Errno 95] Operation not supported'
+DEBUG:fuse.log-mixin:-> write /newfile ('hello world\n', 0, 4L)
+DEBUG:fuse.log-mixin:<- write 12
+=====================================================================================================
+
+^d
+=====================================================================================================
+DEBUG:fuse.log-mixin:-> flush /newfile (4L,)
+DEBUG:fuse.log-mixin:<- flush None
+DEBUG:fuse.log-mixin:-> release /newfile (4L,)
+DEBUG:fuse.log-mixin:<- release None
+=====================================================================================================
+
+ls
+=====================================================================================================
+DEBUG:fuse.log-mixin:-> opendir / ()
+DEBUG:fuse.log-mixin:<- opendir 0
+DEBUG:fuse.log-mixin:-> getattr / (None,)
+DEBUG:fuse.log-mixin:<- getattr {'st_ctime': 1506921926.0, 'st_mtime': 1506921926.0, 'st_nlink': 2, 'st_mode': 16877, 'st_size': 2048, 'st_gid': 62215, 'st_uid': 2493042, 'st_atime': 1506921926.0}
+DEBUG:fuse.log-mixin:-> readdir / (0L,)
+DEBUG:fuse.log-mixin:<- readdir <generator object readdir at 0x7fbfc4235e10>
+DEBUG:fuse.log-mixin:-> releasedir / (0L,)
+DEBUG:fuse.log-mixin:<- releasedir 0
+=====================================================================================================
+
+rm newfile
+=====================================================================================================
+DEBUG:fuse.log-mixin:-> getattr / (None,)
+DEBUG:fuse.log-mixin:<- getattr {'st_ctime': 1506921926.0, 'st_mtime': 1506921926.0, 'st_nlink': 2, 'st_mode': 16877, 'st_size': 2048, 'st_gid': 62215, 'st_uid': 2493042, 'st_atime': 1506921926.0}
+DEBUG:fuse.log-mixin:-> getattr /newfile (None,)
+DEBUG:fuse.log-mixin:<- getattr {'st_ctime': 1506996268.0, 'st_mtime': 1506996268.0, 'st_nlink': 1, 'st_mode': 33188, 'st_size': 12, 'st_gid': 62215, 'st_uid': 2493042, 'st_atime': 1506996268.0}
+DEBUG:fuse.log-mixin:-> access /newfile (2,)
+DEBUG:fuse.log-mixin:<- access None
+DEBUG:fuse.log-mixin:-> unlink /newfile ()
+DEBUG:fuse.log-mixin:<- unlink None
+=====================================================================================================
+
+
+Part 2
+Question 3
+    def __init__(self):
+        self.files = {}
+	'''Define a dictionary to hold attribute value of a file'''
+        self.data = defaultdict(bytes)
+        ''' '''
+	self.fd = 0
+	''' '''
+        now = time()
+	''' '''
+        self.files['/'] = dict(st_mode=(S_IFDIR | 0o755), st_ctime=now,
+                               st_mtime=now, st_atime=now, st_nlink=2)
+	''' '''
+
+
+
